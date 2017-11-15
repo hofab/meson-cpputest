@@ -1,3 +1,5 @@
+project('cpputest', 'cpp')
+
 cppu_src = [
             'src/CppUTest/CommandLineArguments.cpp',
             'src/CppUTest/CommandLineTestRunner.cpp',
@@ -20,29 +22,30 @@ cppu_src = [
 ]
 
 cppue_src = [
-            'src/CppUTest/CodeMemoryReportFormatter.cpp',
-            'src/CppUTest/IEEE754ExceptionsPlugin.cpp',
-            'src/CppUTest/MemoryReportAllocator.cpp',
-            'src/CppUTest/MemoryReporterPlugin.cpp',
-            'src/CppUTest/MemoryReportFormatter.cpp',
-            'src/CppUTest/MockActualCall.cpp',
-            'src/CppUTest/MockExpectedCall.cpp',
-            'src/CppUTest/MockExpectedCallsList.cpp',
-            'src/CppUTest/MockFailure.cpp',
-            'src/CppUTest/MockNamedValue.cpp',
-            'src/CppUTest/MockSupport.cpp',
-            'src/CppUTest/MockSupport_c.cpp',
-            'src/CppUTest/MockSupportPlugin.cpp',
-            'src/CppUTest/OrderedTest.cpp',
+            'src/CppUTestExt/CodeMemoryReportFormatter.cpp',
+            'src/CppUTestExt/IEEE754ExceptionsPlugin.cpp',
+            'src/CppUTestExt/MemoryReportAllocator.cpp',
+            'src/CppUTestExt/MemoryReporterPlugin.cpp',
+            'src/CppUTestExt/MemoryReportFormatter.cpp',
+            'src/CppUTestExt/MockActualCall.cpp',
+            'src/CppUTestExt/MockExpectedCall.cpp',
+            'src/CppUTestExt/MockExpectedCallsList.cpp',
+            'src/CppUTestExt/MockFailure.cpp',
+            'src/CppUTestExt/MockNamedValue.cpp',
+            'src/CppUTestExt/MockSupport.cpp',
+            'src/CppUTestExt/MockSupport_c.cpp',
+            'src/CppUTestExt/MockSupportPlugin.cpp',
+            'src/CppUTestExt/OrderedTest.cpp',
 ]
 
-cppu_inc = include_directories('include/CppUTest')
-cppue_inc = include_directories('include/CppUTestxt')
+platform_src = [ 'src/Platforms/Gcc/UtestPlatform.cpp' ]
 
-libcpputest = library(  'libcpputest', cppu_src,
+cppu_inc = include_directories('include')
+
+libcpputest = library(  'cpputest', [cppu_src, platform_src],
                         include_directories : cppu_inc )
-libcpputestext = library(  'libcpputestext', cppue_src,
-                        include_directories : cppue_inc )
+libcpputestext = library(  'cpputestext',[cppue_src, cppu_src, platform_src],
+                        include_directories : cppu_inc )
 
-lcpp_dep = declare_dependency(link_with : ['libcpputest','libcpputestext'],
-                    include_directories : ['cppu_inc','cppue_inc'])
+lcpp_dep = declare_dependency(link_with : [libcpputest, libcpputestext],
+                    include_directories : [cppu_inc])

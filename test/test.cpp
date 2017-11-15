@@ -13,7 +13,7 @@ TEST_GROUP(ClassName)
   {
     delete className;
   }
-}
+};
 
 TEST(ClassName, Create)
 {
